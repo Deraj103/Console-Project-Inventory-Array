@@ -41,28 +41,32 @@ namespace Console_Project_Inventory_Array
         // expression-bodied method to display info
         public string display() => $"{itemID} {name}, price: {price:c}, {quantity} on hand";
 
-        // method to find an item in the array
-        public static int findIt(ItemClass[] inventory, int itemID)
-        {
-            for (int i = 0; i < inventory.Length; i++)
-            {
-                if (inventory[i].getItemID() == itemID)
-                {
-                    WriteLine($"Found it! {inventory[i].display()}");
-                    return i;
-                }
-                else
-                {
-                    WriteLine("Invalid ID number.");
-                }
-            }
-            return -1;
-        }
-
         // method to set the quantity for restock
+        public int restockMethod()
+        {
+            return 0;
+        }
 
         // method to subtract from the available quantity for sale.
         // needs to return a boolean that indicates if the sale was successful or not.
         // Only change the quantity if there is enough on hand for the sale.
+        public bool sellMethod(int soldQty, bool stop)
+        {
+            bool sellCheck = false;
+
+            if (soldQty < quantity)
+            {
+                sellCheck = true;
+                quantity -= soldQty;
+            }
+            else
+            {
+                WriteLine("Not enough on hand to sell that many.");
+                // needs to display the item info 
+                WriteLine($"{display()}");
+                stop = true;
+            }
+            return sellCheck;
+        }
     }
 }
