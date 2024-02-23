@@ -13,12 +13,6 @@ namespace Console_Project_Inventory_Array
         private int itemID, quantity;
         private double price;
 
-        // default constructor
-        public ItemClass()
-        {
-
-        }
-
         // constructor
         public ItemClass(int id, string n, int q, double p)
         {
@@ -36,35 +30,37 @@ namespace Console_Project_Inventory_Array
         public void setQuantity(int q)
         {
             this.quantity = q;
-        } 
+        }
 
         // expression-bodied method to display info
         public string display() => $"{itemID} {name}, price: {price:c}, {quantity} on hand";
 
         // method to set the quantity for restock
-        public int restockMethod()
+        public int restockMethod(int newQty)
         {
+            quantity += newQty;
+            WriteLine($"{display()}");
             return 0;
         }
 
         // method to subtract from the available quantity for sale.
         // needs to return a boolean that indicates if the sale was successful or not.
         // Only change the quantity if there is enough on hand for the sale.
-        public bool sellMethod(int soldQty, bool stop)
+        public bool sellMethod(int soldQty, bool sellCheck)
         {
-            bool sellCheck = false;
+            sellCheck = false;
 
             if (soldQty < quantity)
             {
                 sellCheck = true;
                 quantity -= soldQty;
+                WriteLine($"{display()}");
             }
             else
             {
                 WriteLine("Not enough on hand to sell that many.");
-                // needs to display the item info 
                 WriteLine($"{display()}");
-                stop = true;
+                sellCheck = true;
             }
             return sellCheck;
         }

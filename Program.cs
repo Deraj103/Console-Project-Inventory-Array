@@ -13,14 +13,16 @@ namespace Console_Project_Inventory_Array
         static void Main(string[] args)
         {
             string name;
-            int itemID = 0, quantity = 0, soldQty = 0, spot = 0;
+            int itemID = 0;
+            int quantity = 0;
+            int soldQty = 0;
+            int spot = 0;
+            int newQty = 0;
             double price = 0;
             string reply;
-            bool stop = false;
+            bool sellCheck = false;
 
             WriteLine("Chapter 10 Console Project: Inventory Array by Jared Tims");
-
-            //ItemClass temp = new ItemClass();
 
             // inventory array
             int size = 1;
@@ -65,40 +67,63 @@ namespace Console_Project_Inventory_Array
                 {
                     if (reply == "s")
                     {
+                        // this block of code is for selling a quantity of a item.
                         try
                         {
                             Write("Enter the item ID: ");
                             itemID = int.Parse(ReadLine());
-                            spot = findIt(inventory, itemID, stop);
-                            Write("How many sold? ");
-                            soldQty = int.Parse(ReadLine());
-                            inventory[spot].sellMethod(soldQty, stop);
+                            (spot, sellCheck) = findIt(inventory, itemID, sellCheck);
+                            if (spot != -1)
+                            {
+                                Write("How many sold? ");
+                                soldQty = int.Parse(ReadLine());
+                                (sellCheck) = inventory[spot].sellMethod(soldQty, sellCheck);
+                            }
                         }
                         catch (FormatException)
                         {
                             WriteLine("Input is in the wrong format.");
-                            stop = true;
+                            sellCheck = true;
                         }
                         //WriteLine(inventory[spot].getQuantity());
                     }
                     else if (reply == "r")
                     {
-
+                        // this block of code adds quantity to an item.
+                        try
+                        {
+                            Write("Enter the item ID: ");
+                            itemID = int.Parse(ReadLine());
+                            (spot, sellCheck) = findIt(inventory, itemID, sellCheck);
+                            Write("How many are we addings? ");
+                            newQty = int.Parse(ReadLine());
+                            inventory[spot].restockMethod(newQty);
+                        }
+                        catch (FormatException)
+                        {
+                            WriteLine("Input is in the wrong format.");
+                            sellCheck = true;
+                        }
                     }
                     else if (reply == "p")
                     {
-
+                        // this block of code displays the available items and inventory.
+                        foreach (ItemClass item in inventory)
+                        {
+                            WriteLine($"{item.display()}");
+                            sellCheck = true;
+                        }
                     }
                     else if (reply == "x")
                     {
-
+                        sellCheck = true;
                     }
                     else
                     {
                         WriteLine("Invalid option, please try again");
-                        stop = true;
+                        sellCheck = true;
                     }
-                } while (stop == false);
+                } while (sellCheck == false);
 
             } while (reply != "x");
 
@@ -108,19 +133,19 @@ namespace Console_Project_Inventory_Array
 
 
         // method to find an item in the array
-        public static int findIt(ItemClass[] inventory, int itemID, bool stop)
+        public static (int, bool) findIt(ItemClass[] inventory, int itemID, bool sellCheck)
         {
             for (int i = 0; i < inventory.Length; i++)
             {
                 if (inventory[i].getItemID() == itemID)
                 {
                     WriteLine($"Found it! {inventory[i].display()}");
-                    return i;
+                    return (i, sellCheck);
                 }
             }
             WriteLine("Invalid ID number.");
-            stop = true;
-            return -1;
+            sellCheck = true;
+            return (-1, sellCheck);
         }
     }
 }
