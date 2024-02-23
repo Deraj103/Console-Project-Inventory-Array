@@ -25,7 +25,7 @@ namespace Console_Project_Inventory_Array
             WriteLine("Chapter 10 Console Project: Inventory Array by Jared Tims");
 
             // inventory array
-            int size = 1;
+            int size = 3;
             ItemClass[] inventory = new ItemClass[size];
 
             for (int i = 0; i < inventory.Length; i++)
@@ -95,7 +95,7 @@ namespace Console_Project_Inventory_Array
                             Write("Enter the item ID: ");
                             itemID = int.Parse(ReadLine());
                             (spot, sellCheck) = findIt(inventory, itemID, sellCheck);
-                            Write("How many are we addings? ");
+                            Write("How many are we adding? ");
                             newQty = int.Parse(ReadLine());
                             inventory[spot].restockMethod(newQty);
                         }
