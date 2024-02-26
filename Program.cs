@@ -10,6 +10,8 @@ namespace Console_Project_Inventory_Array
 {
     internal class Program
     {
+        //private static bool sellCheck;
+
         static void Main(string[] args)
         {
             string name;
@@ -25,7 +27,7 @@ namespace Console_Project_Inventory_Array
             WriteLine("Chapter 10 Console Project: Inventory Array by Jared Tims");
 
             // inventory array
-            int size = 3;
+            int size = 1;
             ItemClass[] inventory = new ItemClass[size];
 
             for (int i = 0; i < inventory.Length; i++)
@@ -72,7 +74,7 @@ namespace Console_Project_Inventory_Array
                         {
                             Write("Enter the item ID: ");
                             itemID = int.Parse(ReadLine());
-                            (spot, sellCheck) = findIt(inventory, itemID, sellCheck);
+                            spot = findIt(inventory, itemID);
                             if (spot != -1)
                             {
                                 Write("How many sold? ");
@@ -83,7 +85,7 @@ namespace Console_Project_Inventory_Array
                         catch (FormatException)
                         {
                             WriteLine("Input is in the wrong format.");
-                            sellCheck = true;
+                            sellCheck = false;
                         }
                         //WriteLine(inventory[spot].getQuantity());
                     }
@@ -94,15 +96,15 @@ namespace Console_Project_Inventory_Array
                         {
                             Write("Enter the item ID: ");
                             itemID = int.Parse(ReadLine());
-                            (spot, sellCheck) = findIt(inventory, itemID, sellCheck);
+                            spot = findIt(inventory, itemID);
                             Write("How many are we adding? ");
                             newQty = int.Parse(ReadLine());
-                            inventory[spot].restockMethod(newQty);
+                            inventory[spot].setQuantity(quantity);
                         }
                         catch (FormatException)
                         {
                             WriteLine("Input is in the wrong format.");
-                            sellCheck = true;
+                            sellCheck = false;
                         }
                     }
                     else if (reply == "p")
@@ -111,12 +113,12 @@ namespace Console_Project_Inventory_Array
                         foreach (ItemClass item in inventory)
                         {
                             WriteLine($"{item.display()}");
-                            sellCheck = true;
+                            sellCheck = false;
                         }
                     }
                     else if (reply == "x")
                     {
-                        sellCheck = true;
+                        sellCheck = false;
                     }
                     else
                     {
@@ -133,19 +135,19 @@ namespace Console_Project_Inventory_Array
 
 
         // method to find an item in the array
-        public static (int, bool) findIt(ItemClass[] inventory, int itemID, bool sellCheck)
+        public static int findIt(ItemClass[] inventory, int itemID)
         {
             for (int i = 0; i < inventory.Length; i++)
             {
                 if (inventory[i].getItemID() == itemID)
                 {
                     WriteLine($"Found it! {inventory[i].display()}");
-                    return (i, sellCheck);
+                    return i;
                 }
             }
             WriteLine("Invalid ID number.");
-            sellCheck = true;
-            return (-1, sellCheck);
+            //sellCheck = false;
+            return -1;
         }
     }
 }

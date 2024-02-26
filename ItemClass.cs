@@ -27,9 +27,11 @@ namespace Console_Project_Inventory_Array
         public int getQuantity() { return this.quantity; }
 
         // setter
-        public void setQuantity(int q)
+        public int setQuantity(int newQty)
         {
-            this.quantity = q;
+            quantity = newQty;
+            WriteLine($"{display()}");
+            return newQty;
         }
 
         // expression-bodied method to display info
@@ -38,7 +40,7 @@ namespace Console_Project_Inventory_Array
         // method to set the quantity for restock
         public int restockMethod(int newQty)
         {
-            quantity += newQty;
+            quantity = newQty;
             WriteLine($"{display()}");
             return 0;
         }
@@ -48,8 +50,6 @@ namespace Console_Project_Inventory_Array
         // Only change the quantity if there is enough on hand for the sale.
         public bool sellMethod(int soldQty, bool sellCheck)
         {
-            sellCheck = false;
-
             if (soldQty < quantity)
             {
                 sellCheck = true;
@@ -60,7 +60,7 @@ namespace Console_Project_Inventory_Array
             {
                 WriteLine("Not enough on hand to sell that many.");
                 WriteLine($"{display()}");
-                sellCheck = true;
+                sellCheck = false;
             }
             return sellCheck;
         }
